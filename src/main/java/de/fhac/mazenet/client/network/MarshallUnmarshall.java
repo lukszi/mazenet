@@ -23,7 +23,10 @@ public class MarshallUnmarshall
     
     public MarshallUnmarshall() throws JAXBException
     {
-        this.jc = JAXBContext.newInstance(AcceptMessageData.class, AwaitMoveMessageData.class, BoardData.class, CardData.class, ClientRole.class, ControlServerData.class, DisconnectMessageData.class, ErrorType.class, GameStatusData.class, LoginMessageData.class, LoginReplyMessageData.class, MazeCom.class, MazeComMessagetype.class, MoveInfoData.class, MoveMessageData.class, ObjectFactory.class, PositionData.class, StatisticData.class, Treasure.class, TreasuresToGoData.class, WinMessageData.class);
+        this.jc = JAXBContext.newInstance(AcceptMessageData.class, AwaitMoveMessageData.class, BoardData.class, CardData.class
+                , ControlServerData.class, DisconnectMessageData.class, GameStatusData.class, LoginMessageData.class,
+                LoginReplyMessageData.class, MazeCom.class, MoveInfoData.class, MoveMessageData.class,
+                ObjectFactory.class, PositionData.class, StatisticData.class, TreasuresToGoData.class, WinMessageData.class);
         this.marshaller = this.jc.createMarshaller();
         this.unmarshaller = this.jc.createUnmarshaller();
     }
