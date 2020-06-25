@@ -111,7 +111,7 @@ public class Team2
             }
         } else {
             try {
-                SSLSocketFactory socketFactory = (SSLSocketFactory) SSLSocketFactory.getDefault();
+                SocketFactory socketFactory = SocketFactory.getDefault();
                 toServer = socketFactory.createSocket(hostname, port);
             } catch (IOException ex) {
                 ex.printStackTrace();
