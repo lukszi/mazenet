@@ -2,6 +2,8 @@ package de.fhac.mazenet.client;
 
 import org.apache.commons.cli.*;
 
+import javax.net.SocketFactory;
+import java.io.IOException;
 import java.net.Socket;
 
 /**
@@ -81,12 +83,23 @@ public class Team2
         Socket toServer = null;
 
         if (!truststorePath.equals("")) {
-            // TODO SSL konfigurieren falls gewünscht
-            // und toServer zuweisen
+            System.setProperty("javax.net.ssl.trustStore", truststorePath);
+            System.setProperty("javax.net.ssl.trustStorePassword", truststorePassword);
+            try {
+                toServer = SocketFactory.getDefault().createSocket();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+                System.exit(-1);
+            }
         } else {
-            // TODO toServer zuweisen
-        }
+            try {
+                toServer = SocketFactory.getDefault().createSocket();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+                System.exit(-1);
+            }
 
+        }
     }
 
 }
