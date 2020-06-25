@@ -10,6 +10,6 @@ public class AwaitMoveHandler extends MessageHandler
     @Override
     public void handle(MazeCom message)
     {
-    
+        
     }
 }

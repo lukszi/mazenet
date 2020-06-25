@@ -2,7 +2,9 @@ package de.fhac.mazenet.client;
 
 import de.fhac.mazenet.client.logic.AwaitMoveHandler;
 import de.fhac.mazenet.client.logic.LoginReplyHandler;
-import de.fhac.mazenet.client.network.MsgParsing;
+import de.fhac.mazenet.client.network.MarshallUnmarshall;
+import de.fhac.mazenet.server.generated.ClientRole;
+import de.fhac.mazenet.server.generated.LoginMessageData;
 import de.fhac.mazenet.server.generated.MazeCom;
 import de.fhac.mazenet.server.generated.MazeComMessagetype;
 import org.apache.commons.cli.*;
@@ -116,13 +118,23 @@ public class Team2
         DataInputStream serverInputStream = null;
         try
         {
-            MsgParsing messageParser = new MsgParsing();
+            MarshallUnmarshall messageParser = new MarshallUnmarshall();
             serverInputStream = new DataInputStream(toServer.getInputStream());
             DataOutputStream serverOutputStream = new DataOutputStream(toServer.getOutputStream());
+            
+            // Login
+            MazeCom login = new MazeCom();
+            LoginMessageData data = new LoginMessageData();
+            data.setName("Team2");
+            data.setRole(ClientRole.PLAYER);
+            login.setLoginMessage(data);
+            String loginMessage = messageParser.marshall(login);
+            serverOutputStream.writeUTF(loginMessage);
+            
             boolean conOpen = true;
             while(conOpen){
                 String strMessage = serverInputStream.readUTF();
-                MazeCom messageObj = messageParser.parseMessage(strMessage);
+                MazeCom messageObj = messageParser.unmarshall(strMessage);
                 dispatcher.dispatch(messageObj);
             }
             
@@ -130,8 +142,6 @@ public class Team2
         {
             e.printStackTrace();
         }
-
-    
     }
     
     private static void setupMessageRouter()
