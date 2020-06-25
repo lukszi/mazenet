@@ -5,14 +5,13 @@ import org.apache.commons.cli.*;
 import java.net.Socket;
 
 /**
- * TODO: Teammitglieder: Person A, Person B, ...
+ * Teammitglieder: Lukas Szimtenings, Felix Szimtenings, Marvin Schmidt, Nicklas Felden-Hilfer, Marco Grunert, Cedric Radtke
  * <p>
- * TODO: Der Klassennamen muss zum Teamnamen refactort werden (keine
- * Leerzeichen, Umlaute, ...)
  */
-public class Client {
+public class Team2
+{
 
-    private static final String TEAMNAME = Client.class.getSimpleName();
+    private static final String TEAMNAME = Team2.class.getSimpleName();
     private static final String OPTION_HOSTNAME = "host";
     private static final String OPTION_PORT = "port";
     private static final String OPTION_TRUSTSTORE_PATH = "truststore";

@@ -11,7 +11,7 @@
         <maven.compiler.target>11</maven.compiler.target>
         <maven.compiler.source>11</maven.compiler.source>
         <!-- TODO: Die MainClass muss ebenfalls angepasst werden -->
-        <main.class>de.fhac.mazenet.client.Client</main.class>
+        <main.class>de.fhac.mazenet.client.Team2</main.class>
     </properties>
 
     <repositories>
