@@ -1,8 +1,16 @@
 package de.fhac.mazenet.client;
 
+import de.fhac.mazenet.client.logic.AwaitMoveHandler;
+import de.fhac.mazenet.client.logic.LoginReplyHandler;
+import de.fhac.mazenet.client.network.MsgParsing;
+import de.fhac.mazenet.server.generated.MazeCom;
+import de.fhac.mazenet.server.generated.MazeComMessagetype;
 import org.apache.commons.cli.*;
 
 import javax.net.SocketFactory;
+import javax.xml.bind.JAXBException;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
@@ -26,6 +34,8 @@ public class Team2
     private static String truststorePath = "";
     private static Options options = new Options();
     private static String truststorePassword = "";
+    
+    private static MessageDispatcher dispatcher;
 
     static {
         String descriptionHost = "Festlegen zu welchem Host verbunden werden soll";
@@ -100,6 +110,35 @@ public class Team2
             }
 
         }
-    }
+        
+        setupMessageRouter();
+    
+        DataInputStream serverInputStream = null;
+        try
+        {
+            MsgParsing messageParser = new MsgParsing();
+            serverInputStream = new DataInputStream(toServer.getInputStream());
+            DataOutputStream serverOutputStream = new DataOutputStream(toServer.getOutputStream());
+            boolean conOpen = true;
+            while(conOpen){
+                String strMessage = serverInputStream.readUTF();
+                MazeCom messageObj = messageParser.parseMessage(strMessage);
+                dispatcher.dispatch(messageObj);
+            }
+            
+        } catch (IOException | JAXBException e)
+        {
+            e.printStackTrace();
+        }
 
+    
+    }
+    
+    private static void setupMessageRouter()
+    {
+        dispatcher = new MessageDispatcher();
+        dispatcher.register(MazeComMessagetype.LOGINREPLY, new LoginReplyHandler());
+        dispatcher.register(MazeComMessagetype.AWAITMOVE, new AwaitMoveHandler());
+    }
+    
 }
