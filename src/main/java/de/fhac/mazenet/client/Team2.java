@@ -7,6 +7,9 @@ import de.fhac.mazenet.server.generated.ClientRole;
 import de.fhac.mazenet.server.generated.LoginMessageData;
 import de.fhac.mazenet.server.generated.MazeCom;
 import de.fhac.mazenet.server.generated.MazeComMessagetype;
+import de.fhac.mazenet.server.networking.MazeComMessageFactory;
+import de.fhac.mazenet.server.networking.XmlInputStream;
+import de.fhac.mazenet.server.networking.XmlOutputStream;
 import org.apache.commons.cli.*;
 
 import javax.net.SocketFactory;
@@ -121,25 +124,17 @@ public class Team2
         DataInputStream serverInputStream = null;
         try
         {
+            XmlOutputStream out = new XmlOutputStream(toServer.getOutputStream());
+            XmlInputStream in = new XmlInputStream(toServer.getInputStream());
             MarshallUnmarshall messageParser = new MarshallUnmarshall();
             serverInputStream = new DataInputStream(toServer.getInputStream());
-            DataOutputStream serverOutputStream = new DataOutputStream(toServer.getOutputStream());
     
             System.out.println("Logging in");
-            // Login
-            LoginMessageData data = new LoginMessageData();
-            data.setName("Team2");
-            data.setRole(ClientRole.PLAYER);
+            MazeCom login = MazeComMessageFactory.createLoginMessage("Team2");
+            out.write(login);
             
-            MazeCom login = new MazeCom();
-            login.setLoginMessage(data);
-            login.setMessagetype(MazeComMessagetype.LOGIN);
-            login.setId(1);
-            
-            String loginMessage = messageParser.marshall(login);
-            System.out.println(loginMessage);
-            serverOutputStream.writeUTF(loginMessage);
             System.out.println("Waiting for messages");
+            
             boolean conOpen = true;
             while(conOpen){
                 String strMessage = serverInputStream.readUTF();
