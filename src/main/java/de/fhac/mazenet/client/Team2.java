@@ -1,6 +1,7 @@
 package de.fhac.mazenet.client;
 
 import de.fhac.mazenet.client.logic.AwaitMoveHandler;
+import de.fhac.mazenet.client.logic.DisconnectHandler;
 import de.fhac.mazenet.client.logic.LoginReplyHandler;
 import de.fhac.mazenet.client.network.MarshallUnmarshall;
 import de.fhac.mazenet.server.generated.ClientRole;
@@ -151,6 +152,7 @@ public class Team2
         dispatcher = new MessageDispatcher();
         dispatcher.register(MazeComMessagetype.LOGINREPLY, new LoginReplyHandler());
         dispatcher.register(MazeComMessagetype.AWAITMOVE, new AwaitMoveHandler());
+        dispatcher.register(MazeComMessagetype.DISCONNECT, new DisconnectHandler());
     }
     
 }

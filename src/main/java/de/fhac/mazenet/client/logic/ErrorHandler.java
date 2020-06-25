@@ -10,7 +10,7 @@ public class ErrorHandler extends MessageHandler
     @Override
     public void handle(MazeCom message)
     {
-        System.err.println("This should not appear, the messageType" + message.getMessagetype().name() + "is not handled");
+        System.err.println("The messageType " + message.getMessagetype().name() + " is not handled");
         System.err.println("Shutting down");
     }
     
