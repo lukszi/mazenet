@@ -87,7 +87,8 @@ public class Team2
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException
+    {
         parseArgs(args);
         System.out.println("Team: " + TEAMNAME);
         System.out.println("Host: " + hostname);
@@ -120,14 +121,12 @@ public class Team2
         }
         
         setupMessageRouter();
-    
-        DataInputStream serverInputStream = null;
+        XmlOutputStream out = new XmlOutputStream(toServer.getOutputStream());
+        XmlInputStream in = new XmlInputStream(toServer.getInputStream());
         try
         {
-            XmlOutputStream out = new XmlOutputStream(toServer.getOutputStream());
-            XmlInputStream in = new XmlInputStream(toServer.getInputStream());
+            
             MarshallUnmarshall messageParser = new MarshallUnmarshall();
-            serverInputStream = new DataInputStream(toServer.getInputStream());
     
             System.out.println("Logging in");
             MazeCom login = MazeComMessageFactory.createLoginMessage("Team2");
@@ -137,9 +136,8 @@ public class Team2
             
             boolean conOpen = true;
             while(conOpen){
-                String strMessage = serverInputStream.readUTF();
-                MazeCom messageObj = messageParser.unmarshall(strMessage);
-                dispatcher.dispatch(messageObj);
+                MazeCom message = in.readMazeCom();
+                dispatcher.dispatch(message);
             }
             
         } catch (IOException | JAXBException e)
