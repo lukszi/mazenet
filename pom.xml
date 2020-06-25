@@ -2,15 +2,13 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>de.fhac.rn.mazenet.client</groupId>
-    <!-- TODO: Die ArtifactId muss durch den Teamnamen ersetzt werden -->
-    <artifactId>Client</artifactId>
+    <artifactId>Team2</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.target>11</maven.compiler.target>
         <maven.compiler.source>11</maven.compiler.source>
-        <!-- TODO: Die MainClass muss ebenfalls angepasst werden -->
         <main.class>de.fhac.mazenet.client.Team2</main.class>
     </properties>
 
@@ -30,8 +28,7 @@
         <dependency>
             <groupId>de.fhac.mazenet</groupId>
             <artifactId>maze-server</artifactId>
-            <!-- TODO: Version anpassen -->
-            <version>v2019.2</version>
+            <version>v2019.4</version>
         </dependency>
     </dependencies>
 

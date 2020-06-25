@@ -1,8 +1,5 @@
 # TODO
 
-* `Client.java`
-  * Refactoring in Teamnamen
-  * Teammitglieder in Javadoc eintragen
 * `pom.xml`
   * `artifactId` anpassen
   * Die Mainklasse `<main.class>` umbenennen
