@@ -1,11 +1,5 @@
 # TODO
 
-* `pom.xml`
-  * `artifactId` anpassen
-  * Die Mainklasse `<main.class>` umbenennen
-  * Serverversion der `dependecies` anpassen
-* `.gitignore` kontrollieren
-
 # Run
 
 * IDE
