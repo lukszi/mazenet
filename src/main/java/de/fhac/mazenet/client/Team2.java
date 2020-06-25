@@ -10,6 +10,7 @@ import de.fhac.mazenet.server.generated.MazeComMessagetype;
 import org.apache.commons.cli.*;
 
 import javax.net.SocketFactory;
+import javax.net.ssl.SSLSocketFactory;
 import javax.xml.bind.JAXBException;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -98,14 +99,16 @@ public class Team2
             System.setProperty("javax.net.ssl.trustStore", truststorePath);
             System.setProperty("javax.net.ssl.trustStorePassword", truststorePassword);
             try {
-                toServer = SocketFactory.getDefault().createSocket();
+                SSLSocketFactory socketFactory = (SSLSocketFactory) SSLSocketFactory.getDefault();
+                toServer = socketFactory.createSocket(hostname, port);
             } catch (IOException ex) {
                 ex.printStackTrace();
                 System.exit(-1);
             }
         } else {
             try {
-                toServer = SocketFactory.getDefault().createSocket();
+                SSLSocketFactory socketFactory = (SSLSocketFactory) SSLSocketFactory.getDefault();
+                toServer = socketFactory.createSocket(hostname, port);
             } catch (IOException ex) {
                 ex.printStackTrace();
                 System.exit(-1);
