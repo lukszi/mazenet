@@ -25,11 +25,9 @@ public class MessageRouter
         this.errorHandler = new ErrorHandler();
     }
     
-    
     public void register(MazeComMessagetype messagetype, MessageHandler handler){
         this.handlerRegistry.put(messagetype, handler);
     }
-    
     
     public void route(MazeCom message){
         handlerRegistry.getOrDefault(message.getMessagetype(), errorHandler).handle(message);

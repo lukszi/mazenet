@@ -1,5 +1,15 @@
 # TODO
-
+* MessageHandler schreiben für
+    * LoginMessage
+    * LoginReplyMessage
+    * AwaitMoveMessage
+    * MoveMessage
+    * MoveInfoMessage
+    * GameStatusMessage
+    * ControlServerMessage
+    * AcceptMessage
+    * WinMessage
+    * DisconnectMessage
 # Run
 
 * IDE
