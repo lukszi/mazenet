@@ -29,6 +29,8 @@ public class MarshallUnmarshall
                 ObjectFactory.class, PositionData.class, StatisticData.class, TreasuresToGoData.class, WinMessageData.class);
         this.marshaller = this.jc.createMarshaller();
         this.unmarshaller = this.jc.createUnmarshaller();
+        this.marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+    
     }
     
     public MazeCom unmarshall(String message) throws JAXBException

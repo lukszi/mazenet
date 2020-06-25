@@ -124,16 +124,22 @@ public class Team2
             MarshallUnmarshall messageParser = new MarshallUnmarshall();
             serverInputStream = new DataInputStream(toServer.getInputStream());
             DataOutputStream serverOutputStream = new DataOutputStream(toServer.getOutputStream());
-            
+    
+            System.out.println("Logging in");
             // Login
-            MazeCom login = new MazeCom();
             LoginMessageData data = new LoginMessageData();
             data.setName("Team2");
             data.setRole(ClientRole.PLAYER);
-            login.setLoginMessage(data);
-            String loginMessage = messageParser.marshall(login);
-            serverOutputStream.writeUTF(loginMessage);
             
+            MazeCom login = new MazeCom();
+            login.setLoginMessage(data);
+            login.setMessagetype(MazeComMessagetype.LOGIN);
+            login.setId(1);
+            
+            String loginMessage = messageParser.marshall(login);
+            System.out.println(loginMessage);
+            serverOutputStream.writeUTF(loginMessage);
+            System.out.println("Waiting for messages");
             boolean conOpen = true;
             while(conOpen){
                 String strMessage = serverInputStream.readUTF();
