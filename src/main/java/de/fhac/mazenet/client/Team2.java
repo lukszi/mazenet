@@ -120,15 +120,13 @@ public class Team2
             }
 
         }
-        
-        setupMessageRouter();
+
         XmlOutputStream out = new XmlOutputStream(toServer.getOutputStream());
+        setupMessageRouter(out);
         XmlInputStream in = new XmlInputStream(toServer.getInputStream());
         try
         {
             
-            MarshallUnmarshall messageParser = new MarshallUnmarshall();
-    
             System.out.println("Logging in");
             MazeCom login = MazeComMessageFactory.createLoginMessage("Team2");
             out.write(login);
@@ -147,11 +145,12 @@ public class Team2
         }
     }
     
-    private static void setupMessageRouter()
+    private static void setupMessageRouter(XmlOutputStream out)
     {
         dispatcher = new MessageDispatcher();
         dispatcher.register(MazeComMessagetype.LOGINREPLY, new LoginReplyHandler());
-        dispatcher.register(MazeComMessagetype.AWAITMOVE, new AwaitMoveHandler());
+        dispatcher.register(MazeComMessagetype.AWAITMOVE, new AwaitMoveHandler(out));
+        dispatcher.register(MazeComMessagetype.DISCONNECT, new DisconnectHandler());
         dispatcher.register(MazeComMessagetype.DISCONNECT, new DisconnectHandler());
     }
     
