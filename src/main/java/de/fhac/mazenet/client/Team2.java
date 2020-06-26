@@ -151,7 +151,6 @@ public class Team2
         dispatcher.register(MazeComMessagetype.LOGINREPLY, new LoginReplyHandler());
         dispatcher.register(MazeComMessagetype.AWAITMOVE, new AwaitMoveHandler(out));
         dispatcher.register(MazeComMessagetype.DISCONNECT, new DisconnectHandler());
-        dispatcher.register(MazeComMessagetype.DISCONNECT, new DisconnectHandler());
     }
     
 }
