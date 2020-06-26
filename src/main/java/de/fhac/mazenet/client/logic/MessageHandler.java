@@ -9,7 +9,7 @@ import de.fhac.mazenet.server.generated.MazeCom;
  */
 public abstract class MessageHandler
 {
-    public static ApplicationState state;
+    public static final ApplicationState STATE = new ApplicationState();
     
     public abstract void handle(MazeCom message);
 }
