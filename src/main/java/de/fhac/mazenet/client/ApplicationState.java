@@ -5,4 +5,15 @@ package de.fhac.mazenet.client;
  */
 public class ApplicationState
 {
+    private int id;
+    
+    public int getId()
+    {
+        return id;
+    }
+    
+    public void setId(int id)
+    {
+        this.id = id;
+    }
 }

@@ -11,9 +11,8 @@ public class LoginReplyHandler extends MessageHandler
     @Override
     public void handle(MazeCom loginMessage)
     {
-        LoginReplyMessageData loginReplyMessage = loginMessage.getLoginReplyMessage();
-        
-        // TODO: implement gameState object that contains our ID
-        System.out.println(loginReplyMessage.getNewID());
+        int id = loginMessage.getLoginReplyMessage().getNewID();
+        System.out.println("Succesfully logged in, now working with ID: " + id);
+        STATE.setId(id);
     }
 }
