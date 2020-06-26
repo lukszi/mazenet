@@ -1,12 +1,10 @@
 package de.fhac.mazenet.client;
 
+import de.fhac.mazenet.client.logic.AcceptHandler;
 import de.fhac.mazenet.client.logic.AwaitMoveHandler;
 import de.fhac.mazenet.client.logic.DisconnectHandler;
 import de.fhac.mazenet.client.logic.ErrorHandler;
 import de.fhac.mazenet.client.logic.LoginReplyHandler;
-import de.fhac.mazenet.client.network.MarshallUnmarshall;
-import de.fhac.mazenet.server.generated.ClientRole;
-import de.fhac.mazenet.server.generated.LoginMessageData;
 import de.fhac.mazenet.server.generated.MazeCom;
 import de.fhac.mazenet.server.generated.MazeComMessagetype;
 import de.fhac.mazenet.server.networking.MazeComMessageFactory;
@@ -17,8 +15,6 @@ import org.apache.commons.cli.*;
 import javax.net.SocketFactory;
 import javax.net.ssl.SSLSocketFactory;
 import javax.xml.bind.JAXBException;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
@@ -153,6 +149,6 @@ public class Team2
         dispatcher.register(MazeComMessagetype.LOGINREPLY, new LoginReplyHandler());
         dispatcher.register(MazeComMessagetype.AWAITMOVE, new AwaitMoveHandler(out));
         dispatcher.register(MazeComMessagetype.DISCONNECT, new DisconnectHandler());
+        dispatcher.register(MazeComMessagetype.ACCEPT, new AcceptHandler());
     }
-    
 }
