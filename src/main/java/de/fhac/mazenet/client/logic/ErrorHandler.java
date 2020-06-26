@@ -10,7 +10,7 @@ import java.net.Socket;
  */
 public class ErrorHandler extends MessageHandler
 {
-    private Socket serverSocket;
+    private final Socket serverSocket;
 
     public ErrorHandler(Socket serverSocket){
         this.serverSocket = serverSocket;

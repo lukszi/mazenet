@@ -23,6 +23,7 @@ public class AwaitMoveHandler extends MessageHandler
         //TODO: Implement
         System.out.println("Awaiting movement");
         BoardData boardData = message.getAwaitMoveMessage().getBoard();
+        STATE.boardData = boardData;
         MoveMessageData move = new MoveMessageData();
         move.setShiftCard(boardData.getShiftCard());
         move.setNewPinPos(newPosition(5, 5));
