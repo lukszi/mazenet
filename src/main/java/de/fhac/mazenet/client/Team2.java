@@ -2,6 +2,7 @@ package de.fhac.mazenet.client;
 
 import de.fhac.mazenet.client.logic.AwaitMoveHandler;
 import de.fhac.mazenet.client.logic.DisconnectHandler;
+import de.fhac.mazenet.client.logic.ErrorHandler;
 import de.fhac.mazenet.client.logic.LoginReplyHandler;
 import de.fhac.mazenet.client.network.MarshallUnmarshall;
 import de.fhac.mazenet.server.generated.ClientRole;
@@ -122,7 +123,7 @@ public class Team2
         }
 
         XmlOutputStream out = new XmlOutputStream(toServer.getOutputStream());
-        setupMessageRouter(out);
+        setupMessageRouter(out, toServer);
         XmlInputStream in = new XmlInputStream(toServer.getInputStream());
         try
         {
@@ -145,9 +146,10 @@ public class Team2
         }
     }
     
-    private static void setupMessageRouter(XmlOutputStream out)
+    private static void setupMessageRouter(XmlOutputStream out, Socket serverSocket)
     {
-        dispatcher = new MessageDispatcher();
+        ErrorHandler errorHandler = new ErrorHandler(serverSocket);
+        dispatcher = new MessageDispatcher(errorHandler);
         dispatcher.register(MazeComMessagetype.LOGINREPLY, new LoginReplyHandler());
         dispatcher.register(MazeComMessagetype.AWAITMOVE, new AwaitMoveHandler(out));
         dispatcher.register(MazeComMessagetype.DISCONNECT, new DisconnectHandler());

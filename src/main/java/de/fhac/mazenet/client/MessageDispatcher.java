@@ -6,6 +6,7 @@ import de.fhac.mazenet.server.generated.MazeCom;
 import de.fhac.mazenet.server.generated.MazeComMessagetype;
 import de.fhac.mazenet.server.networking.XmlOutputStream;
 
+import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,10 +18,10 @@ public class MessageDispatcher
     private final Map<MazeComMessagetype, MessageHandler> handlerRegistry;
     private final ErrorHandler errorHandler;
 
-    public MessageDispatcher()
+    public MessageDispatcher(ErrorHandler errorHandler)
     {
         this.handlerRegistry = new HashMap<>();
-        this.errorHandler = new ErrorHandler();
+        this.errorHandler = errorHandler;
     }
     
     public void register(MazeComMessagetype messagetype, MessageHandler handler){
