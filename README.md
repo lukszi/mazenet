@@ -10,6 +10,13 @@
     * AcceptMessage
     * WinMessage
     * DisconnectMessage
+
+* Awaitmovehandler methode nach externer position frage
+* MessageHandler auf interface
+* Interne States
+* Threading
+ 
+ KI
 # Run
 
 * IDE
