@@ -15,6 +15,7 @@ import org.apache.commons.cli.*;
 import javax.net.SocketFactory;
 import javax.net.ssl.SSLSocketFactory;
 import javax.xml.bind.JAXBException;
+import java.io.EOFException;
 import java.io.IOException;
 import java.net.Socket;
 
@@ -136,10 +137,15 @@ public class Team2
                 dispatcher.dispatch(message);
             }
             
-        } catch (IOException | JAXBException e)
+        }
+        catch(EOFException e){
+            System.out.println("EOFEcception, main loop shutting down");
+        }
+        catch (IOException | JAXBException e)
         {
             e.printStackTrace();
         }
+
     }
     
     private static void setupMessageRouter(XmlOutputStream out, Socket serverSocket)
