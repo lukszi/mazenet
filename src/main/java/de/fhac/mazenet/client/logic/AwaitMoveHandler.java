@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -69,7 +70,40 @@ public class AwaitMoveHandler extends MessageHandler
                                 board -> board,
                                 board -> board.getAllReachablePositions(board.findPlayer(STATE.getId()))));
         
+        Board move = getMove(reachablePositions);
+        
         return null;
+    }
+    
+    private Board getMove(Map<Board, List<Position>> reachablePositions)
+    {
+        Board boardWithReachableTreasure = null;
+        Position positionOfReachableTreasure = null;
+        for(Board board : reachablePositions.keySet()){
+            List<Position> positions = reachablePositions.get(board);
+            
+            // Look for a position with a treasure
+            Optional<Position> treasure = positions.stream().filter(position -> {
+                CardData card = board.getCard(position.getRow(), position.getCol());
+                return card.getTreasure() != null;
+            }).findAny();
+            
+            // If found save position and board and stop looking
+            if(treasure.isPresent()){
+                positionOfReachableTreasure = treasure.get();
+                boardWithReachableTreasure = board;
+                break;
+            }
+        }
+        
+        if(boardWithReachableTreasure == null)
+        {
+            return null;
+        }
+        else{
+            // Move player to specified position
+        }
+        return boardWithReachableTreasure;
     }
     
     private List<Board> createFakeBoards(Board board)
