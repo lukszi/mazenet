@@ -1,7 +1,7 @@
 package de.fhac.mazenet.client.logic;
 
-import de.fhac.mazenet.server.game.Position;
 import de.fhac.mazenet.server.generated.*;
+import de.fhac.mazenet.server.networking.MazeComMessageFactory;
 import de.fhac.mazenet.server.networking.XmlOutputStream;
 
 import java.io.IOException;
@@ -20,36 +20,28 @@ public class AwaitMoveHandler extends MessageHandler
     @Override
     public void handle(MazeCom message)
     {
-        //TODO: Implement Positionen holen und Karten rotation
-    	Position shiftpos=new Position(0, 1);
-    	Position figurpos=new Position(5, 5);
-    	
-    	//
+        //TODO: Implement
         System.out.println("Awaiting movement");
         BoardData boardData = message.getAwaitMoveMessage().getBoard();
-        if(getOppositemove(boardData).equals(shiftpos)&&shiftpos.isLooseShiftPosition()) {
-        	//Fehlermeldung
-        }else {
-        	MoveMessageData move = new MoveMessageData();  
-            move.setShiftCard(boardData.getShiftCard());
-            move.setNewPinPos(figurpos);
-            move.setShiftPosition(shiftpos);       
-            boardData.setForbidden(shiftpos);
-            STATE.setBoardData(boardData);
-            MazeCom mazeCom = new MazeCom();
-            mazeCom.setMessagetype(MazeComMessagetype.MOVE);
-            mazeCom.setMoveMessage(move);
-            try {
-                out.write(mazeCom);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }   
+        STATE.setBoardData(boardData);
+        MoveMessageData move = new MoveMessageData();
+        move.setShiftCard(boardData.getShiftCard());
+        move.setNewPinPos(newPosition(5, 5));
+        move.setShiftPosition(newPosition(0, 1));
+        MazeCom mazeCom = new MazeCom();
+        mazeCom.setMessagetype(MazeComMessagetype.MOVE);
+        mazeCom.setMoveMessage(move);
+        try {
+            out.write(mazeCom);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
-    
-    private Position getOppositemove(BoardData boardData) {
-    	Position boardDatapos =(Position) boardData.getForbidden();
-    	Position gegenueberpos=boardDatapos.getOpposite();
-    	return gegenueberpos;
+
+    private PositionData newPosition(int col, int row){
+        PositionData ret = new PositionData();
+        ret.setCol(col);
+        ret.setRow(row);
+        return ret;
     }
 }
