@@ -74,6 +74,7 @@ public class AwaitMoveHandler extends MessageHandler {
         if (move == null) {
             move = getRandomMove(board, treasure);
         }
+        // Fixme: might return illegal move pls fix
         return move;
     }
 
