@@ -45,6 +45,7 @@ public class AwaitMoveHandler extends MessageHandler
             move.setShiftCard(boardData.getShiftCard());
             move.setNewPinPos(playerpos);
             move.setShiftPosition(shiftpos);
+            
             boardData.setForbidden(shiftpos);
             STATE.setBoardData(boardData);
             
@@ -126,6 +127,12 @@ public class AwaitMoveHandler extends MessageHandler
     
     private List<Position> getAllAllowedShifts(Board board)
     {
+        List<Position> allShifts = getAllShifts(board);
+        ArrayList<Position> collect = allShifts.stream().filter(position -> position.equals(getInverseMove(board))).collect(Collectors.toCollection(ArrayList::new));
+    }
+    
+    private List<Position> getAllShifts(Board board){
+        // TODO
         return null;
     }
     
