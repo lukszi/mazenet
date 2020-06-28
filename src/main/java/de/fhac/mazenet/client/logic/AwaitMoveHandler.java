@@ -53,6 +53,11 @@ public class AwaitMoveHandler extends MessageHandler {
 
         for (Board fakeBoard : fakeBoards) {
             Position playerPos = fakeBoard.findPlayer(STATE.getId());
+            // Make sure not to shift out the treasure we're looking for
+            Treasure shiftCardTreasure = fakeBoard.getShiftCard().getTreasure();
+            if(shiftCardTreasure != null && shiftCardTreasure.equals(treasure)){
+                continue;
+            }
             PositionData treasurePosData = fakeBoard.findTreasure(treasure);
             Position treasurePos = new Position(treasurePosData);
 
@@ -141,5 +146,4 @@ public class AwaitMoveHandler extends MessageHandler {
         Position pos = (Position) boardData.getForbidden();
         return pos.getOpposite();
     }
-
 }
