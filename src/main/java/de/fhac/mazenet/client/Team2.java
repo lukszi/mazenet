@@ -1,10 +1,6 @@
 package de.fhac.mazenet.client;
 
-import de.fhac.mazenet.client.logic.AcceptHandler;
-import de.fhac.mazenet.client.logic.AwaitMoveHandler;
-import de.fhac.mazenet.client.logic.DisconnectHandler;
-import de.fhac.mazenet.client.logic.ErrorHandler;
-import de.fhac.mazenet.client.logic.LoginReplyHandler;
+import de.fhac.mazenet.client.logic.*;
 import de.fhac.mazenet.server.generated.MazeCom;
 import de.fhac.mazenet.server.generated.MazeComMessagetype;
 import de.fhac.mazenet.server.networking.MazeComMessageFactory;
@@ -156,5 +152,6 @@ public class Team2
         dispatcher.register(MazeComMessagetype.AWAITMOVE, new AwaitMoveHandler(out));
         dispatcher.register(MazeComMessagetype.DISCONNECT, new DisconnectHandler());
         dispatcher.register(MazeComMessagetype.ACCEPT, new AcceptHandler());
+        dispatcher.register(MazeComMessagetype.MOVEINFO, new MoveInfoHandler());
     }
 }

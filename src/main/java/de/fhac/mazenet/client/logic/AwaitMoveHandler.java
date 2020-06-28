@@ -116,19 +116,24 @@ public class AwaitMoveHandler extends MessageHandler {
     }
 
     private List<Position> getAllShifts(Board board) {
-        ArrayList<Position> shiftPositions = new ArrayList<>();
-        Position forbidden = null;
+        List<Position> shiftPositions = new ArrayList<>();
+
+        for (int row = 1; row < 6; row += 2){
+            shiftPositions.add(new Position(row, 0));
+            shiftPositions.add(new Position(row, 6));
+        }
+        for (int col = 1; col < 6; col += 2){
+            shiftPositions.add(new Position(0, col));
+            shiftPositions.add(new Position(6, col));
+        }
+    
         if (board.getForbidden() != null){
-            forbidden = new Position(board.getForbidden());
+            Position forbidden = new Position(board.getForbidden());
+            shiftPositions = shiftPositions.stream()
+                    .filter(position -> !position.equals(forbidden))
+                    .collect(Collectors.toList());
         }
-        for (int col = 1; col < 6; col += 2) {
-            for (int row = 1; row < 6; row += 2) {
-                Position position = new Position(row, col);
-                if (!(position == forbidden)) {
-                    shiftPositions.add(position);
-                }
-            }
-        }
+
         return shiftPositions;
     }
 
