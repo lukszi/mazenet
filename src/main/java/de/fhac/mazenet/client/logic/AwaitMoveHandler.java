@@ -4,6 +4,7 @@ import de.fhac.mazenet.server.game.Board;
 import de.fhac.mazenet.server.game.Position;
 import de.fhac.mazenet.server.generated.*;
 import de.fhac.mazenet.server.networking.XmlOutputStream;
+import javafx.geometry.Pos;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -34,7 +35,6 @@ public class AwaitMoveHandler extends MessageHandler
         System.out.println("Awaiting movement");
         BoardData boardData = message.getAwaitMoveMessage().getBoard();
         Board board = new Board(boardData);
-        List<Board> boards = createFakeBoards(board);
         
         MoveMessageData mv = getMove(board);
         if(!(shiftpos.isLooseShiftPosition())&& getInverseMove(boardData).equals(shiftpos)) {
@@ -62,73 +62,35 @@ public class AwaitMoveHandler extends MessageHandler
     
     private MoveMessageData getMove(Board originalBoard)
     {
-        List<Board> boards = createFakeBoards(originalBoard);
-        boards.add((Board)originalBoard.clone());
-    
-        Map<Board, List<Position>> reachablePositions = boards.stream()
-                .collect(
-                        Collectors.toMap(
-                                board -> board,
-                                board -> board.getAllReachablePositions(board.findPlayer(STATE.getId()))));
-        
-        Board move = getMove(reachablePositions);
+        Map<Position, Board> boards = createFakeBoards(originalBoard);
         
         return null;
     }
     
-    private Board getMove(Map<Board, List<Position>> reachablePositions)
-    {
-        Board boardWithReachableTreasure = null;
-        Position positionOfReachableTreasure = null;
-        for(Board board : reachablePositions.keySet()){
-            List<Position> positions = reachablePositions.get(board);
-            
-            // Look for a position with a treasure
-            Optional<Position> treasure = positions.stream().filter(position -> {
-                CardData card = board.getCard(position.getRow(), position.getCol());
-                return card.getTreasure() != null;
-            }).findAny();
-            
-            // If found save position and board and stop looking
-            if(treasure.isPresent()){
-                positionOfReachableTreasure = treasure.get();
-                boardWithReachableTreasure = board;
-                break;
-            }
-        }
-        
-        if(boardWithReachableTreasure == null)
-        {
-            return null;
-        }
-        else{
-            // Move player to specified position
-        }
-        return boardWithReachableTreasure;
-    }
-    
-    private List<Board> createFakeBoards(Board board)
+    private Map<Position, Board> createFakeBoards(Board board)
     {
         // Get all allowed shifts
-        ArrayList<MoveMessageData> allowedShifts = getAllAllowedShifts(board).stream()
-                .map(this::createMoveMessageData)
-                .collect(Collectors.toCollection(ArrayList::new));
+        ArrayList<Position> allowedShifts = new ArrayList<>(getAllAllowedShifts(board));
         
         // Apply all allowed shifts
         return allowedShifts.stream()
-                .map(board::fakeShift)
-                .collect(Collectors.toCollection(ArrayList::new));
+                .collect(Collectors.toMap(shiftPos -> shiftPos, shiftPos -> createFakeBoard(board, shiftPos)));
     }
     
-    private MoveMessageData createMoveMessageData(Position allowedShift)
+    private Board createFakeBoard(Board board, Position shiftPos)
     {
-        return null;
+        MoveMessageData move = new MoveMessageData();
+        move.setShiftPosition(shiftPos);
+        board.fakeShift(move);
+        return board;
     }
     
     private List<Position> getAllAllowedShifts(Board board)
     {
         List<Position> allShifts = getAllShifts(board);
-        ArrayList<Position> collect = allShifts.stream().filter(position -> position.equals(getInverseMove(board))).collect(Collectors.toCollection(ArrayList::new));
+        return allShifts.stream()
+                .filter(position -> position.equals(board.getForbidden()))
+                .collect(Collectors.toCollection(ArrayList::new));
     }
     
     private List<Position> getAllShifts(Board board){
