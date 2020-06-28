@@ -4,7 +4,6 @@ import de.fhac.mazenet.server.game.Board;
 import de.fhac.mazenet.server.game.Position;
 import de.fhac.mazenet.server.generated.*;
 import de.fhac.mazenet.server.networking.XmlOutputStream;
-import javafx.geometry.Pos;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -34,6 +33,7 @@ public class AwaitMoveHandler extends MessageHandler
     	
         System.out.println("Awaiting movement");
         BoardData boardData = message.getAwaitMoveMessage().getBoard();
+        Treasure toFindTreasure = message.getAwaitMoveMessage().getTreasureToFindNext();
         Board board = new Board(boardData);
         
         MoveMessageData mv = getMove(board);
@@ -58,6 +58,11 @@ public class AwaitMoveHandler extends MessageHandler
                 e.printStackTrace();
             }
         }  
+    }
+
+    private boolean treasureReachable(PositionData playerPos, PositionData treasurePos, Board board) {
+        List<Position> reachable = board.getAllReachablePositions(playerPos);
+        return reachable.contains(treasurePos);
     }
     
     private MoveMessageData getMove(Board originalBoard)
@@ -94,8 +99,24 @@ public class AwaitMoveHandler extends MessageHandler
     }
     
     private List<Position> getAllShifts(Board board){
-        // TODO
-        return null;
+        ArrayList<Position> shiftPositions = new ArrayList<>();
+        for(int col = 0; col < 6; col++){
+            for(int row = 0; row < 6; row++){
+                Position position = new Position(row, col);
+                if (!(position == board.getForbidden())){
+                    if (position.getCol() % 6 == 0) {
+                        if (position.getRow() % 2 == 0){
+                            shiftPositions.add(position);
+                        }
+                    } else if (position.getRow() % 6 == 0) {
+                        if (position.getCol() % 2 == 0) {
+                            shiftPositions.add(position);
+                        }
+                    }
+                }
+            }
+        }
+        return shiftPositions;
     }
     
     private Position getInverseMove(BoardData boardData) {
