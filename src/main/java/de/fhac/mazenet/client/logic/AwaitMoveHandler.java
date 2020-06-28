@@ -46,6 +46,7 @@ public class AwaitMoveHandler extends MessageHandler {
         return reachable.contains(treasurePos);
     }
 
+
     private MoveMessageData getMove(Board board, Treasure treasure) {
         MoveMessageData move = null;
         List<Board> fakeBoards = createFakeBoards(board);
@@ -116,19 +117,15 @@ public class AwaitMoveHandler extends MessageHandler {
 
     private List<Position> getAllShifts(Board board) {
         ArrayList<Position> shiftPositions = new ArrayList<>();
-        for (int col = 0; col < 6; col++) {
-            for (int row = 0; row < 6; row++) {
+        Position forbidden = null;
+        if (board.getForbidden() != null){
+            forbidden = new Position(board.getForbidden());
+        }
+        for (int col = 1; col < 6; col += 2) {
+            for (int row = 1; row < 6; row += 2) {
                 Position position = new Position(row, col);
-                if (!(position == board.getForbidden())) {
-                    if (position.getCol() % 6 == 0) {
-                        if (position.getRow() % 2 == 0) {
-                            shiftPositions.add(position);
-                        }
-                    } else if (position.getRow() % 6 == 0) {
-                        if (position.getCol() % 2 == 0) {
-                            shiftPositions.add(position);
-                        }
-                    }
+                if (!(position == forbidden)) {
+                    shiftPositions.add(position);
                 }
             }
         }
